@@ -1,0 +1,7 @@
+- Cost of app that App Trader pays = X * $10k.
+- Purchase price based on highest price between the two stores.
+- Apps earn $5k per month per store period
+- Marketing is $1k per month per app regardless of how many stores it is in.
+- Rating lifespan = X * .5 so rating of 0 is lifespan of 1 year, rating of 1 is lifespan of 3 yrs., rating of 4 is lifespan of 9 yrs, etc.
+- Also look into comparing rating with review_count.
+- App Trader prefers to work with apps in both stores.

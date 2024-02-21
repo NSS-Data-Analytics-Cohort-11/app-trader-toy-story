@@ -16,37 +16,35 @@ FROM app_store_apps;
 
 --ANSWER 328
 
---Of those in both tables, what are the top ten highest rated apps?
-SELECT DISTINCT name
-FROM play_store_apps
-INTERSECT
-SELECT DISTINCT name
-FROM app_store_apps
-WHERE rating >= 4.0;
-
---ANSWER
 
 
--- SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), primary_genre, rating
--- FROM app_store_apps
--- UNION
--- SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), genres, rating
--- FROM play_store_apps
--- ORDER BY rating DESC;
+--Of those in both tables, how many are rated '5.0'?
 
-WITH both_stores AS(
-	SELECT 'App Store' as store, 
-	name, CAST(price as MONEY) as price,
-	content_rating, rating, CAST(review_count as int), primary_genre
+SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), primary_genre, rating
 FROM app_store_apps
 UNION
-SELECT 'Play Store'
-	name, CAST(price as MONEY), content_rating, rating, CAST(review_count as int), genres
-FROM play_store_apps)
+SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), genres, rating
+FROM play_store_apps
+WHERE rating IS NOT NULL AND rating = '5.0'
+ORDER BY rating DESC;
 
-SELECT name, COUNT(store) as no_of_stores, MAX(price), ROUND(AVG(rating,1)), content_rating, primary_genre
-FROM both_stores
-WHERE content_rating IS NOT NULL
-GROUP BY name, content_rating, primary_genre
-ORDER BY content_rating DESC
-HAVING COUNT(store) = 2
+--ANSWER 7468
+
+-- How many have a 5.0 rating AND a content_rating of 'Everyone'?
+SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), primary_genre, rating
+FROM app_store_apps
+UNION
+SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), genres, rating
+FROM play_store_apps
+WHERE rating IS NOT NULL AND rating = '5.0' AND content_rating = 'Everyone'
+ORDER BY content_rating DESC;
+
+--ANSWER 237
+
+SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), primary_genre, rating
+FROM app_store_apps
+UNION
+SELECT name, CAST(price as MONEY), content_rating, CAST(review_count as int), genres, rating
+FROM play_store_apps
+WHERE rating IS NOT NULL AND rating = '5.0' AND review_count >= '2000000'
+ORDER BY review_count DESC;
